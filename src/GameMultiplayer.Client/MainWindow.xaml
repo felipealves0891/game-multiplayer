@@ -1,0 +1,239 @@
+﻿<Window x:Class="GameMultiplayer.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GameMultiplayer.Client" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:converters="clr-namespace:GameMultiplayer.Client.Converters"
+        mc:Ignorable="d"
+        Title="GameMultiplayer" 
+        Height="450" 
+        Width="800" 
+        WindowStartupLocation="CenterScreen" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStyle="None"
+        MouseDown="Window_MouseDown"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+
+        <converters:BoolToBrushConverter x:Key="BoolToBrushConverter" />
+
+    </Window.Resources>
+    
+    <Border CornerRadius="10" 
+            BorderThickness="3" 
+            BorderBrush="Yellow"
+            Background="White"
+            Padding="10">
+        
+        <!-- Grid -->
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <!-- Cabeçalho da pagina -->
+            
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+
+                <TextBlock Text="Game Multiplayer"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="21"/>
+
+                <Button Content="{materialDesign:PackIcon Kind=Power}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Name="Close"
+                        Click="Close_Click"/>
+
+            </Grid>
+            
+            <!-- Grid do jogo -->
+
+            <materialDesign:DialogHost Name="DialogHost" Margin="10"  Grid.Row="1" Grid.Column="0">
+                
+                <materialDesign:DialogHost.DialogContent>
+
+                    <Grid Margin="20">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBox Name="MyName"
+                                 Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                 materialDesign:HintAssist.Hint="Apelido... " Width="250"
+                                 FontSize="16"
+                                 MaxLength="15"
+                                 Margin="0 0 0 10"/>
+
+                        <Button Content="Sair"
+                                Grid.Row="1" Grid.Column="0"
+                                Margin="10"
+                                Click="Close_Click"/>
+                        
+                        <Button Content="Iniciar"
+                                Grid.Row="1" Grid.Column="1"
+                                Margin="10 20"
+                                Name="Start"
+                                Click="Start_Click"/>
+
+                    </Grid>
+
+                </materialDesign:DialogHost.DialogContent>
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Name="PlatformPosition" Text="Linha: 3, Coluna: 3"
+                               ToolTip="Sua Posição!" Margin="0 0 15 0"/>
+
+                        <TextBlock Name="PlatformGoals" Text="Alvos: 3"
+                               ToolTip="Sua Posição!"/>
+
+                    </StackPanel>
+                    
+                    <Grid Name="Platform" Background="Gainsboro"
+                          Grid.Row="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                    </Grid>
+
+                </Grid>
+
+            </materialDesign:DialogHost>
+            
+            <!-- Jogadores onlines -->
+            <Grid Grid.Row="1" Grid.Column="1" Margin="10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0">
+
+                    <TextBlock Text="Players"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="21"
+                       Margin="0 10" />
+
+                    <ItemsControl Name="Players">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0 3">
+                                    <Rectangle Fill="{Binding Main, Converter={StaticResource BoolToBrushConverter}}" Width="10" HorizontalAlignment="Left" />
+                                    <TextBlock Text="{Binding Name}" Margin="15 0 0 0" FontSize="14" HorizontalAlignment="Left" />
+                                    <TextBlock Text="{Binding Points}" HorizontalAlignment="Right" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+
+                <TextBlock Text="0 players"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           FontSize="12"
+                           Margin="0 10"
+                           Name="NumberOfPlayers"/>
+
+
+            </Grid>
+            
+            
+        </Grid>
+        
+    </Border>
+    
+</Window>
