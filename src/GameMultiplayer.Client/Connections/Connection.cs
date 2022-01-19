@@ -12,25 +12,18 @@ namespace GameMultiplayer.Client.Connections
 {
     public class Connection
     {
+        private const string _key = "api_key=a93e228a229b4859a4e3169cdafd2cee/860c227d0c704157bf783b544ce149bd/4cb06c1ce08147c1aae042f223daf9e6==";
+
         private HubConnection _hub;
 
         public bool IsOpen { get; private set; }
 
-        public Connection()
+        public Connection(string url, string password)
         {
             IsOpen = false;
             _hub = new HubConnectionBuilder()
-                .WithUrl("https://localhost:5001/game", (opts) => 
-                {
-                    opts.HttpMessageHandlerFactory = (message) =>
-                    {
-                        // bypass SSL certificate
-                        if (message is HttpClientHandler clientHandler)
-                            clientHandler.ServerCertificateCustomValidationCallback += (sender, certificate, chain, sslPolicyErrors) => { return true; };
-                        return message;
-                    };
-                })
-                .Build();
+                        .WithUrl($"{url}?{_key}", opts => { opts.AccessTokenProvider = () => Task.FromResult(password); })
+                        .Build();
 
             _hub.Closed += Reconnect;
         }
@@ -50,7 +43,6 @@ namespace GameMultiplayer.Client.Connections
 
         public async Task<Player> RegisterPlayer(string name)
         {
-            Random random = new Random();
             Player player = new Player()
             {
                 Id = Guid.NewGuid().ToString("N"),

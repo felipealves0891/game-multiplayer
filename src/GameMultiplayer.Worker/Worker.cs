@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,11 +16,16 @@ namespace GameMultiplayer.Worker
 
         private readonly HubConnection _hub;
 
-        public Worker(ILogger<Worker> logger)
+        public Worker(ILogger<Worker> logger, IConfiguration configuration)
         {
             _logger = logger;
+
+            string url = configuration["Server:Url"];
+            string key = configuration["Server:Key"];
+            string password = configuration["Server:Password"];
+
             _hub = new HubConnectionBuilder()
-                .WithUrl("https://localhost:5001/game")
+                .WithUrl($"{url}{key}", opts => { opts.AccessTokenProvider = () => Task.FromResult(password); })
                 .Build();
 
             _hub.Closed += Reconnect;
@@ -37,8 +43,8 @@ namespace GameMultiplayer.Worker
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
                 await _hub.InvokeAsync("AddGoal");
+                await Task.Delay(1000);
             }
         }
     }
