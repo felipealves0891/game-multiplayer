@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameMultiplayer.Server.Authentications;
 using GameMultiplayer.Server.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace GameMultiplayer.Server.Hubs
 {
+    [ApiKey]
     public class GameHub : Hub
     {
         private readonly ILogger<GameHub> _logger;
