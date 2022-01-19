@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameMultiplayer.Client" 
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-        xmlns:converters="clr-namespace:GameMultiplayer.Client.Converters"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="GameMultiplayer" 
         Height="450" 
@@ -17,12 +16,6 @@
         MouseDown="Window_MouseDown"
         Loaded="Window_Loaded">
 
-    <Window.Resources>
-
-        <converters:BoolToBrushConverter x:Key="BoolToBrushConverter" />
-
-    </Window.Resources>
-    
     <Border CornerRadius="10" 
             BorderThickness="3" 
             BorderBrush="Yellow"
@@ -211,7 +204,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="0 3">
-                                    <Rectangle Fill="{Binding Main, Converter={StaticResource BoolToBrushConverter}}" Width="10" HorizontalAlignment="Left" />
+                                    <Rectangle Fill="{Binding Color}" Width="10" HorizontalAlignment="Left" />
                                     <TextBlock Text="{Binding Name}" Margin="15 0 0 0" FontSize="14" HorizontalAlignment="Left" />
                                     <TextBlock Text="{Binding Points}" HorizontalAlignment="Right" />
                                 </Grid>

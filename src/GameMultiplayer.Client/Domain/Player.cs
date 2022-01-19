@@ -16,14 +16,14 @@ namespace GameMultiplayer.Client.Domain
 
         public List<Goal> Goals { get; set; }
 
-        public bool Main { get; set; }
-
         public int Points => Goals.Count;
+
+        public Color Color { get; set; }
 
         public Player()
         {
             Goals = new List<Goal>();
-            Main = false;
+            Color = new Color();
         }
 
     }

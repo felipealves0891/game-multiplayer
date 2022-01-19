@@ -18,18 +18,24 @@ namespace GameMultiplayer.Server.Models
 
         public int Points => Goals.Count;
 
-        public Player(string id, string name, Position position, List<Goal> goals)
+        public Color Color { get; set; }
+
+        public Player()
+        {}
+
+        public Player(Player old)
         {
-            Id = id;
-            Name = name;
-            Position = position;
-            Goals = goals;
+            Id = old.Id;
+            Name = old.Name;
+            Position = old.Position;
+            Goals = old.Goals;
+            Color = old.Color;
         }
 
         public Player Move(string direction)
         {
-            Position position = Position.Move(direction);
-            return new Player(Id, Name, position, Goals);
+            Position = Position.Move(direction);
+            return new Player(this);
         }
 
         public override int GetHashCode()

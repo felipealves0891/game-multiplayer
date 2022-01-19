@@ -106,6 +106,17 @@ namespace GameMultiplayer.Server.Models
                 movedPlayer.Goals.Add(goal);
             }
 
+            Player playerDown = Players.Where(x => x.Id != movedPlayer.Id && x.Position.Equals(movedPlayer.Position))
+                                       .FirstOrDefault();
+
+            if(playerDown != null)
+            {
+                players.Remove(playerDown);
+                movedPlayer.Goals.AddRange(playerDown.Goals);
+                playerDown.Goals = new List<Goal>();
+                players.Add(playerDown);
+            }
+
             players.Add(movedPlayer);
             return new Game(Id, players, goals);
         }

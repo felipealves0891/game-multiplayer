@@ -28,6 +28,8 @@ namespace GameMultiplayer.Client
 
         private Connection _connection;
 
+        public Connection Connection { get => _connection; set => _connection = value; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,7 +38,6 @@ namespace GameMultiplayer.Client
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DialogHost.IsOpen = true;
-            _connection = new Connection();
         }
 
         private void GameRenderer(Game game)
@@ -46,12 +47,12 @@ namespace GameMultiplayer.Client
                 if (_player is null)
                     return;
 
-                Players.ItemsSource = game.Players.Select(x => 
+                Players.ItemsSource = game.Players.Select(x => new 
                 {
-                    if (x.Id == _player.Id)
-                        x.Main = true;
-
-                    return x;
+                    Id = x.Id,
+                    Name = x.Name,
+                    Points = x.Points,
+                    Color = new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)x.Color.R, (byte)x.Color.G, (byte)x.Color.B))
                 })
                 .OrderByDescending(x => x.Points);
 
@@ -68,7 +69,7 @@ namespace GameMultiplayer.Client
                         PlatformPosition.Text = player.Position.ToString();
                         _rectangle = rectangle;
                     }
-                        
+                     
                 }
 
                 PlatformGoals.Text = $"Alvos: {game.Goals.Count()}";
@@ -78,8 +79,6 @@ namespace GameMultiplayer.Client
                     Platform.Children.Add(rectangle);
                 }
 
-                if (_rectangle != null)
-                    _rectangle.Fill = new SolidColorBrush(Color.FromRgb(255, 255, 0));
             });
 
         }
@@ -92,8 +91,8 @@ namespace GameMultiplayer.Client
 
         private async void Close_Click(object sender, RoutedEventArgs e)
         {
-            if(_connection.IsOpen)
-                await _connection.Desconect(_player);
+            if(Connection.IsOpen)
+                await Connection.Desconect(_player);
 
             this.Close();
         }
@@ -105,9 +104,9 @@ namespace GameMultiplayer.Client
                 if (string.IsNullOrEmpty(MyName.Text))
                     return;
 
-                await _connection.Open(GameRenderer);
-                _player = await _connection.RegisterPlayer(MyName.Text);
-                await _connection.Update();
+                await Connection.Open(GameRenderer);
+                _player = await Connection.RegisterPlayer(MyName.Text);
+                await Connection.Update();
                 DialogHost.IsOpen = false;
                 this.KeyUp += Window_KeyUp;
 
@@ -123,7 +122,7 @@ namespace GameMultiplayer.Client
         {
             Rectangle rectangle = new Rectangle();
             rectangle.ToolTip = player.Name;
-            rectangle.Fill = new SolidColorBrush(Color.FromRgb(170, 170, 170));
+            rectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)player.Color.R, (byte)player.Color.G, (byte)player.Color.B));
             Grid.SetColumn(rectangle, player.Position.Column);
             Grid.SetRow(rectangle, player.Position.Row);
             return rectangle;
@@ -132,7 +131,7 @@ namespace GameMultiplayer.Client
         private Rectangle CreateGoal(Goal goal)
         {
             Rectangle rectangle = new Rectangle();
-            rectangle.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            rectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 255, 0));
             Grid.SetColumn(rectangle, goal.Position.Column);
             Grid.SetRow(rectangle, goal.Position.Row);
             return rectangle;
@@ -151,7 +150,7 @@ namespace GameMultiplayer.Client
 
                 Grid.SetColumn(_rectangle, _player.Position.Column);
                 Grid.SetRow(_rectangle, _player.Position.Row);
-                await _connection.MovePlayer(_player, direction);
+                await Connection.MovePlayer(_player, direction);
 
             }
             catch (Exception ex)
