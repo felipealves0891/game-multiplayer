@@ -120,5 +120,29 @@ namespace GameMultiplayer.Server.Models
             players.Add(movedPlayer);
             return new Game(Id, players, goals);
         }
+
+        public Game UpdatePlayer(Player p)
+        {
+            Player player = Players.Where(x => x.Id == p.Id)
+                                   .FirstOrDefault();
+
+            if (player is null)
+                return this;
+
+            List<Player> players = Players.ToList();
+            Player newPlayer = new Player()
+            {
+                Id = player.Id,
+                Color = p.Color,
+                Goals = player.Goals,
+                Name = p.Name,
+                Position = player.Position
+            };
+
+            if (players.Remove(player))
+                players.Add(newPlayer);
+
+            return new Game(Id, players, Goals);
+        }
     }
 }

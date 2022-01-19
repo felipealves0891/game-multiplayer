@@ -66,6 +66,7 @@ namespace GameMultiplayer.Client
 
                     if (player.Id == _player.Id)
                     {
+                        _player = player;
                         PlatformPosition.Text = player.Position.ToString();
                         _rectangle = rectangle;
                     }
@@ -78,7 +79,6 @@ namespace GameMultiplayer.Client
                     Rectangle rectangle = CreateGoal(goal);
                     Platform.Children.Add(rectangle);
                 }
-
             });
 
         }
@@ -106,9 +106,14 @@ namespace GameMultiplayer.Client
 
                 await Connection.Open(GameRenderer);
                 _player = await Connection.RegisterPlayer(MyName.Text);
+                formFieldName.Text = _player.Id;
+                formFieldName.Text = _player.Name;
+                formFieldColor.Color = System.Windows.Media.Color.FromRgb((byte)_player.Color.R, (byte)_player.Color.G, (byte)_player.Color.B);
+
                 await Connection.Update();
                 DialogHost.IsOpen = false;
                 this.KeyUp += Window_KeyUp;
+
 
             }
             catch (Exception ex)
@@ -151,7 +156,6 @@ namespace GameMultiplayer.Client
                 Grid.SetColumn(_rectangle, _player.Position.Column);
                 Grid.SetRow(_rectangle, _player.Position.Row);
                 await Connection.MovePlayer(_player, direction);
-
             }
             catch (Exception ex)
             {
@@ -160,6 +164,18 @@ namespace GameMultiplayer.Client
 
         }
 
+        private async void btnFormSave_Click(object sender, RoutedEventArgs e)
+        {
+            _player.Name = formFieldName.Text;
+            _player.Color = new Domain.Color() 
+            {
+                R = formFieldColor.Color.R,
+                B = formFieldColor.Color.B,
+                G = formFieldColor.Color.G
+            };
+
+            await Connection.SavePlayer(_player);
+        }
     }
 
 }

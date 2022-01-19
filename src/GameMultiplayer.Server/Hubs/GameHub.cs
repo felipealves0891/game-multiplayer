@@ -47,6 +47,13 @@ namespace GameMultiplayer.Server.Hubs
             _logger.LogInformation("Player {0} move to {1}...", playerId, direction);
         }
 
+        public async Task UpdatePlayer(Player player)
+        {
+            _repository.Game = _repository.Game.UpdatePlayer(player);
+            await Clients.All.SendAsync("update", _repository.Game);
+            _logger.LogInformation("player {0} updated {1}...", player.Id, _repository.Game.Id);
+        }
+
         public async Task AddGoal()
         {
             _repository.Game = _repository.Game.CreateGoal();

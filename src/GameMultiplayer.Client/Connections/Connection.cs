@@ -61,13 +61,18 @@ namespace GameMultiplayer.Client.Connections
         public async Task Desconect(Player player)
         {
             await _hub.InvokeAsync("DesconnectPlayer", player);
+            await _hub.StopAsync();
             IsOpen = false;
         }
 
         public async Task Update()
         {
             await _hub.InvokeAsync("UpdateCaller");
-            await _hub.StopAsync();
+        }
+
+        public async Task SavePlayer(Player player)
+        {
+            await _hub.InvokeAsync("UpdatePlayer", player);
         }
 
         public async Task MovePlayer(Player player, string direction)
